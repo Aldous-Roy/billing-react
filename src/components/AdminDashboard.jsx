@@ -21,7 +21,7 @@ const AdminDashboard = ({
   const handleAddItem = () => {
     const newItemData = {
       ...newItem,
-      id: items.length + 1, // New unique item ID
+      id: items.length + 1, // unique item ID
       price: parseFloat(newItem.price),
       quantity: parseInt(newItem.quantity),
     };
