@@ -3,6 +3,7 @@ import React, { useState } from "react";
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,14 +24,21 @@ const Login = ({ onLogin }) => {
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div>
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Toggle between password and text input
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+              className="absolute right-3 top-3 text-gray-500"
+            >
+              {showPassword ? "Hide" : "Show"} {/* Text toggle */}
+            </button>
           </div>
           <div>
             <button
