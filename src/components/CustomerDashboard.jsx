@@ -91,28 +91,35 @@ const CustomerDashboard = ({
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6">Customer Dashboard</h2>
+    <div className="p-4 sm:p-6">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+        Customer Dashboard
+      </h2>
       <button
         onClick={onLogout}
-        className="bg-red-500 text-white p-2 rounded mb-6"
+        className="bg-red-500 text-white p-2 rounded mb-4 w-full sm:w-auto"
       >
         Logout
       </button>
 
-      <h3 className="text-2xl font-semibold mb-4">Items</h3>
+      <h3 className="text-xl sm:text-2xl font-semibold mb-3">Items</h3>
       <ul className="space-y-3">
         {items.map((item) => (
-          <li key={item.id} className="flex items-center justify-between">
+          <li
+            key={item.id}
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 bg-gray-100 p-3 rounded"
+          >
             <span>
               {item.name} - ${item.price} ({item.quantity} left)
               {item.discountApplicable && (
-                <span> (10% discount applicable)</span>
+                <span className="text-sm text-green-600 ml-1">
+                  (10% discount)
+                </span>
               )}
             </span>
             <button
               onClick={() => addToCart(item)}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto"
             >
               Add to Cart
             </button>
@@ -120,32 +127,34 @@ const CustomerDashboard = ({
         ))}
       </ul>
 
-      <h3 className="text-2xl font-semibold mt-6 mb-4">Cart</h3>
+      <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">Cart</h3>
       <ul className="space-y-3">
         {cart.map((item, index) => (
-          <li key={index} className="flex items-center justify-between">
-            <span>
-              {item.name} - ${item.finalPrice.toFixed(2)}
-            </span>
+          <li
+            key={index}
+            className="flex justify-between bg-gray-50 p-2 rounded"
+          >
+            <span>{item.name}</span>
+            <span>${item.finalPrice.toFixed(2)}</span>
           </li>
         ))}
       </ul>
 
-      <h4 className="text-xl font-semibold mt-4">
+      <h4 className="text-lg sm:text-xl font-semibold mt-4">
         Total Cost: ${totalCost.toFixed(2)}
       </h4>
 
-      <div className="mt-6 flex items-center space-x-3">
+      <div className="mt-4 flex flex-col sm:flex-row gap-3">
         <input
           type="text"
           placeholder="Enter coupon code"
           value={coupon}
           onChange={(e) => setCoupon(e.target.value)}
-          className="p-2 border rounded w-64"
+          className="p-2 border rounded w-full sm:w-64"
         />
         <button
           onClick={applyCoupon}
-          className="bg-green-500 text-white px-4 py-2 rounded"
+          className="bg-green-500 text-white px-4 py-2 rounded w-full sm:w-auto"
         >
           Apply Coupon
         </button>
@@ -154,7 +163,7 @@ const CustomerDashboard = ({
       <div className="mt-6">
         <button
           onClick={placeOrder}
-          className="bg-yellow-500 text-white px-6 py-3 rounded"
+          className="bg-yellow-500 text-white px-6 py-3 rounded w-full sm:w-auto"
         >
           Place Order
         </button>

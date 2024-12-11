@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
 const AdminDashboard = ({
   onLogout,
@@ -52,26 +51,31 @@ const AdminDashboard = ({
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-3xl font-bold mb-4">Admin Dashboard</h2>
+    <div className="p-4 sm:p-6">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">
+        Admin Dashboard
+      </h2>
       <button
         onClick={onLogout}
-        className="bg-red-500 text-white p-2 rounded mb-6"
+        className="bg-red-500 text-white py-2 px-4 rounded mb-6 w-full sm:w-auto"
       >
         Logout
       </button>
 
-      <h3 className="text-2xl font-semibold mb-3">Items</h3>
+      <h3 className="text-xl sm:text-2xl font-semibold mb-3">Items</h3>
       <ul className="space-y-3">
         {items.map((item) => (
-          <li key={item.id} className="flex items-center justify-between">
-            <span>
+          <li
+            key={item.id}
+            className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0"
+          >
+            <span className="text-center sm:text-left">
               {item.name} - ${item.price} ({item.quantity} left)
             </span>
-            <div>
+            <div className="flex space-x-2">
               <button
                 onClick={() => handleIncreaseQuantity(item)}
-                className="bg-blue-500 text-white px-3 py-1 rounded mr-2"
+                className="bg-blue-500 text-white px-3 py-1 rounded"
               >
                 Increase Quantity
               </button>
@@ -91,10 +95,10 @@ const AdminDashboard = ({
           <h4 className="text-lg font-medium">
             Are you sure you want to delete this item?
           </h4>
-          <div className="mt-3">
+          <div className="mt-3 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
             <button
               onClick={() => handleDeleteItem(itemToDelete)}
-              className="bg-green-500 text-white px-4 py-2 rounded mr-3"
+              className="bg-green-500 text-white px-4 py-2 rounded"
             >
               Yes
             </button>
@@ -108,7 +112,9 @@ const AdminDashboard = ({
         </div>
       )}
 
-      <h3 className="text-2xl font-semibold mt-6 mb-3">Add a New Item</h3>
+      <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">
+        Add a New Item
+      </h3>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -157,28 +163,28 @@ const AdminDashboard = ({
         </label>
         <button
           type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded mt-4"
+          className="bg-green-500 text-white px-4 py-2 rounded mt-4 w-full sm:w-auto"
         >
           Add Item
         </button>
       </form>
 
-      <h3 className="text-2xl font-semibold mt-6 mb-3">
+      <h3 className="text-xl sm:text-2xl font-semibold mt-6 mb-3">
         Increase / Decrease Item Quantity
       </h3>
-      <div className="flex items-center space-x-3">
+      <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3">
         <input
           type="number"
           value={quantityToAdd}
           onChange={(e) => setQuantityToAdd(e.target.value)}
           placeholder="Quantity to Add"
-          className="p-2 border rounded"
+          className="p-2 border rounded w-full sm:w-auto"
         />
         <button
           onClick={() =>
             handleIncreaseQuantity(items.find((item) => item.id === 1))
           }
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-500 text-white px-4 py-2 rounded w-full sm:w-auto"
         >
           Increase Quantity
         </button>
