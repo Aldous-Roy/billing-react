@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import AdminDashboard from "./components/AdminDashboard";
 import CustomerDashboard from "./components/CustomerDashboard";
@@ -39,7 +35,9 @@ const App = () => {
   };
 
   return (
-    <Router> {/* Wrap your entire app with BrowserRouter */}
+    <Router>
+      {" "}
+      {/* Wrap your entire app with BrowserRouter */}
       <Routes>
         <Route
           path="/"

@@ -17,7 +17,10 @@ const CustomerDashboard = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    const newTotalCost = cart.reduce((total, item) => total + item.finalPrice, 0);
+    const newTotalCost = cart.reduce(
+      (total, item) => total + item.finalPrice,
+      0
+    );
     setTotalCost(newTotalCost);
   }, [cart]);
 
@@ -49,7 +52,10 @@ const CustomerDashboard = ({
       alert(`Coupon applied! Discount: ${coupons[coupon].discount}%`);
       setCoupons((prev) => ({
         ...prev,
-        [coupon]: { ...prev[coupon], remainingUses: prev[coupon].remainingUses - 1 },
+        [coupon]: {
+          ...prev[coupon],
+          remainingUses: prev[coupon].remainingUses - 1,
+        },
       }));
     } else {
       alert("Invalid or expired coupon!");
@@ -100,7 +106,9 @@ const CustomerDashboard = ({
           <li key={item.id} className="flex items-center justify-between">
             <span>
               {item.name} - ${item.price} ({item.quantity} left)
-              {item.discountApplicable && <span> (10% discount applicable)</span>}
+              {item.discountApplicable && (
+                <span> (10% discount applicable)</span>
+              )}
             </span>
             <button
               onClick={() => addToCart(item)}
@@ -116,12 +124,16 @@ const CustomerDashboard = ({
       <ul className="space-y-3">
         {cart.map((item, index) => (
           <li key={index} className="flex items-center justify-between">
-            <span>{item.name} - ${item.finalPrice.toFixed(2)}</span>
+            <span>
+              {item.name} - ${item.finalPrice.toFixed(2)}
+            </span>
           </li>
         ))}
       </ul>
 
-      <h4 className="text-xl font-semibold mt-4">Total Cost: ${totalCost.toFixed(2)}</h4>
+      <h4 className="text-xl font-semibold mt-4">
+        Total Cost: ${totalCost.toFixed(2)}
+      </h4>
 
       <div className="mt-6 flex items-center space-x-3">
         <input

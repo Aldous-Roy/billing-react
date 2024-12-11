@@ -26,13 +26,21 @@ const AdminDashboard = ({
       quantity: parseInt(newItem.quantity),
     };
     setItems([...items, newItemData]);
-    setNewItem({ name: "", category: "", price: "", quantity: "", discountApplicable: false });
+    setNewItem({
+      name: "",
+      category: "",
+      price: "",
+      quantity: "",
+      discountApplicable: false,
+    });
   };
 
   const handleIncreaseQuantity = (item) => {
     setItems((prev) =>
       prev.map((i) =>
-        i.id === item.id ? { ...i, quantity: i.quantity + Number(quantityToAdd) } : i
+        i.id === item.id
+          ? { ...i, quantity: i.quantity + Number(quantityToAdd) }
+          : i
       )
     );
     setQuantityToAdd(0); // Reset quantity to add after the update
@@ -80,7 +88,9 @@ const AdminDashboard = ({
 
       {itemToDelete && (
         <div className="mt-4 p-4 border rounded bg-gray-100">
-          <h4 className="text-lg font-medium">Are you sure you want to delete this item?</h4>
+          <h4 className="text-lg font-medium">
+            Are you sure you want to delete this item?
+          </h4>
           <div className="mt-3">
             <button
               onClick={() => handleDeleteItem(itemToDelete)}
@@ -153,7 +163,9 @@ const AdminDashboard = ({
         </button>
       </form>
 
-      <h3 className="text-2xl font-semibold mt-6 mb-3">Increase / Decrease Item Quantity</h3>
+      <h3 className="text-2xl font-semibold mt-6 mb-3">
+        Increase / Decrease Item Quantity
+      </h3>
       <div className="flex items-center space-x-3">
         <input
           type="number"
@@ -163,7 +175,9 @@ const AdminDashboard = ({
           className="p-2 border rounded"
         />
         <button
-          onClick={() => handleIncreaseQuantity(items.find((item) => item.id === 1))}
+          onClick={() =>
+            handleIncreaseQuantity(items.find((item) => item.id === 1))
+          }
           className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           Increase Quantity
