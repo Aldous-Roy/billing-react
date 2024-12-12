@@ -39,7 +39,9 @@ const AdminDashboard = ({
       price: parseFloat(newItem.price),
       quantity: parseInt(newItem.quantity),
     };
-    setItems([...items, newItemData]);
+
+    setItems((prev) => [...prev, newItemData]);
+
     setShowAddItemModal(false);
     setNewItem({
       name: "",
@@ -114,21 +116,27 @@ const AdminDashboard = ({
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
+      <div className="flex justify-between items-center mb-4">
         <input
           type="text"
           placeholder="Search items..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="p-2 border rounded w-full sm:w-auto mb-2 sm:mb-0"
+          className="p-2 border rounded w-full sm:w-auto"
         />
         <button
           onClick={() =>
             setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
           }
-          className="bg-gray-300 text-black px-4 py-2 rounded w-full sm:w-auto"
+          className="bg-gray-300 text-black px-4 py-2 rounded w-full sm:w-auto ml-4"
         >
           Sort by Price ({sortOrder === "asc" ? "Ascending" : "Descending"})
+        </button>
+        <button
+          onClick={() => setShowAddItemModal(true)}
+          className="bg-green-500 text-white px-4 py-2 rounded ml-4"
+        >
+          Add New Product
         </button>
       </div>
 
@@ -171,7 +179,6 @@ const AdminDashboard = ({
         ))}
       </ul>
 
-      {/* Delete Confirmation */}
       {itemToDelete && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-4 rounded shadow-lg">
@@ -194,11 +201,10 @@ const AdminDashboard = ({
         </div>
       )}
 
-      {/* Add New Item Modal */}
       {showAddItemModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h3 className="text-lg font-bold mb-4">Add New Item</h3>
+            <h3 className="text-lg font-bold mb-4">Add New Product</h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -208,7 +214,7 @@ const AdminDashboard = ({
             >
               <input
                 type="text"
-                placeholder="Item Name"
+                placeholder="Product Name"
                 value={newItem.name}
                 onChange={(e) =>
                   setNewItem({ ...newItem, name: e.target.value })
@@ -268,7 +274,7 @@ const AdminDashboard = ({
                   type="submit"
                   className="bg-blue-500 text-white px-4 py-2 rounded"
                 >
-                  Add Item
+                  Add Product
                 </button>
               </div>
             </form>
