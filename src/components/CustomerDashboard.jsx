@@ -44,6 +44,20 @@ const CustomerDashboard = ({
     }
   };
 
+  const removeFromCart = (itemToRemove) => {
+    setCart((prevCart) =>
+      prevCart.filter((item, index) => index !== itemToRemove.index)
+    );
+
+    setItems((prev) =>
+      prev.map((i) =>
+        i.id === itemToRemove.id
+          ? { ...i, quantity: i.quantity + 1 }
+          : i
+      )
+    );
+  };
+
   const applyCoupon = () => {
     if (coupon in coupons && coupons[coupon].remainingUses > 0) {
       const discount = totalCost * (coupons[coupon].discount / 100);
@@ -134,8 +148,16 @@ const CustomerDashboard = ({
             key={index}
             className="flex justify-between bg-gray-50 p-2 rounded"
           >
-            <span>{item.name}</span>
-            <span>${item.finalPrice.toFixed(2)}</span>
+            <div className="flex justify-between w-full">
+              <span>{item.name}</span>
+              <span>${item.finalPrice.toFixed(2)}</span>
+            </div>
+            <button
+              onClick={() => removeFromCart({ ...item, index })}
+              className="bg-red-500 text-white px-2 py-1 rounded ml-2"
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>
