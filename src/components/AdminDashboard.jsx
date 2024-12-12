@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Date from "react"
+
 const AdminDashboard = ({
   onLogout,
   items = [],
@@ -62,6 +62,7 @@ const AdminDashboard = ({
       )
     );
     setQuantityToAddMap((prev) => ({ ...prev, [item.id]: 0 }));
+    alert("Quantity modified successfully")
   };
 
   const handleDeleteItem = (itemId) => {
