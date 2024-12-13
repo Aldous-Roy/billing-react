@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Table from "./Table";
 
 const AdminDashboard = ({
   onLogout,
@@ -9,6 +10,9 @@ const AdminDashboard = ({
   customers = [],
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [searchPrice, setSearchPrice] = useState("");
+  const [searchQuantity, setSearchQuantity] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [filteredItems, setFilteredItems] = useState(items);
   const [showAddItemModal, setShowAddItemModal] = useState(false);
@@ -21,21 +25,36 @@ const AdminDashboard = ({
   });
   const [quantityToAddMap, setQuantityToAddMap] = useState({});
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [sortColumn, setSortColumn] = useState("name");
 
+  // Update filtered items whenever search query, sort order, or items change
   useEffect(() => {
-    let filtered = items.filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    filtered = filtered.sort((a, b) =>
-      sortOrder === "asc" ? a.price - b.price : b.price - a.price
-    );
+    let filtered = items.filter((item) => {
+      const nameMatch = item.name.toLowerCase().includes(searchName.toLowerCase());
+      const priceMatch = item.price.toString().includes(searchPrice);
+      const quantityMatch = item.quantity.toString().includes(searchQuantity);
+      return nameMatch && priceMatch && quantityMatch;
+    });
+
+    filtered = filtered.sort((a, b) => {
+      if (sortColumn === "price") {
+        return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
+      }
+      if (sortColumn === "quantity") {
+        return sortOrder === "asc" ? a.quantity - b.quantity : b.quantity - a.quantity;
+      }
+      return sortOrder === "asc"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    });
+
     setFilteredItems(filtered);
-  }, [searchQuery, sortOrder, items]);
+  }, [searchName, searchPrice, searchQuantity, sortOrder, sortColumn, items]);
 
   const handleAddItem = () => {
     const newItemData = {
       ...newItem,
-      id: Date.now(), // Use timestamp as unique ID
+      id: Date.now(),
       price: parseFloat(newItem.price),
       quantity: parseInt(newItem.quantity),
     };
@@ -54,6 +73,11 @@ const AdminDashboard = ({
 
   const handleIncreaseQuantity = (item) => {
     const quantityToAdd = quantityToAddMap[item.id] || 0;
+    if (quantityToAdd <= 0) {
+      alert("Enter a valid quantity to add.");
+      return;
+    }
+
     setItems((prev) =>
       prev.map((i) =>
         i.id === item.id
@@ -62,7 +86,7 @@ const AdminDashboard = ({
       )
     );
     setQuantityToAddMap((prev) => ({ ...prev, [item.id]: 0 }));
-    alert("Quantity modified successfully")
+    alert("Quantity modified successfully");
   };
 
   const handleDeleteItem = (itemId) => {
@@ -120,65 +144,128 @@ const AdminDashboard = ({
       <div className="flex justify-between items-center mb-4">
         <input
           type="text"
-          placeholder="Search items..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by Name"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          className="p-2 border rounded w-full sm:w-auto"
+        />
+        <input
+          type="text"
+          placeholder="Search by Price"
+          value={searchPrice}
+          onChange={(e) => setSearchPrice(e.target.value)}
+          className="p-2 border rounded w-full sm:w-auto"
+        />
+        <input
+          type="text"
+          placeholder="Search by Quantity"
+          value={searchQuantity}
+          onChange={(e) => setSearchQuantity(e.target.value)}
           className="p-2 border rounded w-full sm:w-auto"
         />
         <button
           onClick={() =>
-            setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
+            setShowAddItemModal(true)
           }
-          className="bg-gray-300 text-black px-4 py-2 rounded w-full sm:w-auto ml-4"
-        >
-          Sort by Price ({sortOrder === "asc" ? "Ascending" : "Descending"})
-        </button>
-        <button
-          onClick={() => setShowAddItemModal(true)}
           className="bg-green-500 text-white px-4 py-2 rounded ml-4"
         >
           Add New Product
         </button>
       </div>
 
-      <ul className="space-y-3 mb-6">
-        {filteredItems.map((item) => (
-          <li
-            key={item.id}
-            className="p-3 border rounded flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0"
-          >
-            <span>
-              {item.name} - ₹{item.price.toFixed(2)} ({item.quantity} left)
-            </span>
-            <div className="flex space-x-2">
-              <input
-                type="number"
-                placeholder="Add Qty"
-                value={quantityToAddMap[item.id] || 0}
-                onChange={(e) =>
-                  setQuantityToAddMap((prev) => ({
-                    ...prev,
-                    [item.id]: e.target.value,
-                  }))
-                }
-                className="border rounded w-16 px-2"
-              />
-              <button
-                onClick={() => handleIncreaseQuantity(item)}
-                className="bg-blue-500 text-white px-3 py-1 rounded"
-              >
-                Add Quantity
-              </button>
-              <button
-                onClick={() => setItemToDelete(item.id)}
-                className="bg-red-500 text-white px-3 py-1 rounded"
-              >
-                Delete
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {/* Table with Sorting Buttons in Header */}
+      <table className="table-auto w-full border-collapse border border-gray-300 mb-6">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              <div className="flex justify-between items-center">
+                <span>Product Name</span>
+                <button
+                  onClick={() => {
+                    setSortColumn("name");
+                    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+                  }}
+                  className="text-sm text-gray-500"
+                >
+                  {sortColumn === "name" && sortOrder === "asc" ? "↓" : "↑"}
+                </button>
+              </div>
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              <div className="flex justify-between items-center">
+                <span>Price (₹)</span>
+                <button
+                  onClick={() => {
+                    setSortColumn("price");
+                    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+                  }}
+                  className="text-sm text-gray-500"
+                >
+                  {sortColumn === "price" && sortOrder === "asc" ? "↓" : "↑"}
+                </button>
+              </div>
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              <div className="flex justify-between items-center">
+                <span>Quantity</span>
+                <button
+                  onClick={() => {
+                    setSortColumn("quantity");
+                    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+                  }}
+                  className="text-sm text-gray-500"
+                >
+                  {sortColumn === "quantity" && sortOrder === "asc"
+                    ? "↓"
+                    : "↑"}
+                </button>
+              </div>
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredItems.map((item) => (
+            <tr key={item.id} className="hover:bg-gray-100">
+              <td className="border border-gray-300 px-4 py-2">{item.name}</td>
+              <td className="border border-gray-300 px-4 py-2">
+                ₹{item.price.toFixed(2)}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item.quantity}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="number"
+                    placeholder="Add Qty"
+                    value={quantityToAddMap[item.id] || 0}
+                    onChange={(e) =>
+                      setQuantityToAddMap((prev) => ({
+                        ...prev,
+                        [item.id]: e.target.value,
+                      }))
+                    }
+                    className="border rounded w-16 px-2"
+                  />
+                  <button
+                    onClick={() => handleIncreaseQuantity(item)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                  >
+                    Add Qty
+                  </button>
+                  <button
+                    onClick={() => setItemToDelete(item.id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {itemToDelete && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -249,9 +336,10 @@ const AdminDashboard = ({
                 }
                 className="w-full p-2 border rounded"
               />
-              <label className="flex items-center">
+              <div className="flex items-center space-x-3">
                 <input
                   type="checkbox"
+                  id="discountApplicable"
                   checked={newItem.discountApplicable}
                   onChange={(e) =>
                     setNewItem({
@@ -259,25 +347,17 @@ const AdminDashboard = ({
                       discountApplicable: e.target.checked,
                     })
                   }
-                  className="mr-2"
                 />
-                Discount Applicable
-              </label>
-              <div className="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  onClick={() => setShowAddItemModal(false)}
-                  className="bg-gray-300 px-4 py-2 rounded"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                >
-                  Add Product
-                </button>
+                <label htmlFor="discountApplicable">
+                  Discount Applicable
+                </label>
               </div>
+              <button
+                type="submit"
+                className="w-full bg-green-500 text-white py-2 px-4 rounded"
+              >
+                Add Product
+              </button>
             </form>
           </div>
         </div>
