@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Table from "./Table";
 
 const AdminDashboard = ({
   onLogout,
@@ -27,7 +26,6 @@ const AdminDashboard = ({
   const [itemToDelete, setItemToDelete] = useState(null);
   const [sortColumn, setSortColumn] = useState("name");
 
-  // Update filtered items whenever search query, sort order, or items change
   useEffect(() => {
     let filtered = items.filter((item) => {
       const nameMatch = item.name.toLowerCase().includes(searchName.toLowerCase());
@@ -142,27 +140,6 @@ const AdminDashboard = ({
       </div>
 
       <div className="flex justify-between items-center mb-4">
-        <input
-          type="text"
-          placeholder="Search by Name"
-          value={searchName}
-          onChange={(e) => setSearchName(e.target.value)}
-          className="p-2 border rounded w-full sm:w-auto"
-        />
-        <input
-          type="text"
-          placeholder="Search by Price"
-          value={searchPrice}
-          onChange={(e) => setSearchPrice(e.target.value)}
-          className="p-2 border rounded w-full sm:w-auto"
-        />
-        <input
-          type="text"
-          placeholder="Search by Quantity"
-          value={searchQuantity}
-          onChange={(e) => setSearchQuantity(e.target.value)}
-          className="p-2 border rounded w-full sm:w-auto"
-        />
         <button
           onClick={() =>
             setShowAddItemModal(true)
@@ -215,13 +192,39 @@ const AdminDashboard = ({
                   }}
                   className="text-sm text-gray-500"
                 >
-                  {sortColumn === "quantity" && sortOrder === "asc"
-                    ? "↓"
-                    : "↑"}
+                  {sortColumn === "quantity" && sortOrder === "asc" ? "↓" : "↑"}
                 </button>
               </div>
             </th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Actions</th>
+          </tr>
+          <tr>
+            <th className="border border-gray-300 px-4 py-2">
+              <input
+                type="text"
+                placeholder="Search by Name"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                className="p-2 border rounded w-full"
+              />
+            </th>
+            <th className="border border-gray-300 px-4 py-2">
+              <input
+                type="text"
+                placeholder="Search by Price"
+                value={searchPrice}
+                onChange={(e) => setSearchPrice(e.target.value)}
+                className="p-2 border rounded w-full"
+              />
+            </th>
+            <th className="border border-gray-300 px-4 py-2">
+              <input
+                type="text"
+                placeholder="Search by Quantity"
+                value={searchQuantity}
+                onChange={(e) => setSearchQuantity(e.target.value)}
+                className="p-2 border rounded w-full"
+              />
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -233,34 +236,6 @@ const AdminDashboard = ({
               </td>
               <td className="border border-gray-300 px-4 py-2">
                 {item.quantity}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="number"
-                    placeholder="Add Qty"
-                    value={quantityToAddMap[item.id] || 0}
-                    onChange={(e) =>
-                      setQuantityToAddMap((prev) => ({
-                        ...prev,
-                        [item.id]: e.target.value,
-                      }))
-                    }
-                    className="border rounded w-16 px-2"
-                  />
-                  <button
-                    onClick={() => handleIncreaseQuantity(item)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded"
-                  >
-                    Add Qty
-                  </button>
-                  <button
-                    onClick={() => setItemToDelete(item.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
-                </div>
               </td>
             </tr>
           ))}
