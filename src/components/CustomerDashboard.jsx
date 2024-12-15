@@ -51,9 +51,7 @@ const CustomerDashboard = ({
 
     setItems((prev) =>
       prev.map((i) =>
-        i.id === itemToRemove.id
-          ? { ...i, quantity: i.quantity + 1 }
-          : i
+        i.id === itemToRemove.id ? { ...i, quantity: i.quantity + 1 } : i
       )
     );
   };

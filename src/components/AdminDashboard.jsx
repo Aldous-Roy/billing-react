@@ -28,7 +28,9 @@ const AdminDashboard = ({
 
   useEffect(() => {
     let filtered = items.filter((item) => {
-      const nameMatch = item.name.toLowerCase().includes(searchName.toLowerCase());
+      const nameMatch = item.name
+        .toLowerCase()
+        .includes(searchName.toLowerCase());
       const priceMatch = item.price.toString().includes(searchPrice);
       const quantityMatch = item.quantity.toString().includes(searchQuantity);
       return nameMatch && priceMatch && quantityMatch;
@@ -39,7 +41,9 @@ const AdminDashboard = ({
         return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
       }
       if (sortColumn === "quantity") {
-        return sortOrder === "asc" ? a.quantity - b.quantity : b.quantity - a.quantity;
+        return sortOrder === "asc"
+          ? a.quantity - b.quantity
+          : b.quantity - a.quantity;
       }
       return sortOrder === "asc"
         ? a.name.localeCompare(b.name)
@@ -141,9 +145,7 @@ const AdminDashboard = ({
 
       <div className="flex justify-between items-center mb-4">
         <button
-          onClick={() =>
-            setShowAddItemModal(true)
-          }
+          onClick={() => setShowAddItemModal(true)}
           className="bg-green-500 text-white px-4 py-2 rounded ml-4"
         >
           Add New Product
@@ -315,9 +317,7 @@ const AdminDashboard = ({
                     })
                   }
                 />
-                <label htmlFor="discountApplicable">
-                  Discount Applicable
-                </label>
+                <label htmlFor="discountApplicable">Discount Applicable</label>
               </div>
               <button
                 type="submit"
