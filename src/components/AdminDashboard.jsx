@@ -167,6 +167,13 @@ const AdminDashboard = ({
                   {sortColumn === "name" && sortOrder === "asc" ? "↓" : "↑"}
                 </button>
               </div>
+              <input
+                type="text"
+                placeholder="Search by Name"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                className="p-2 border rounded w-full"
+              />
             </th>
             <th className="border border-gray-300 px-4 py-2 text-left">
               <div className="flex justify-between items-center">
@@ -181,6 +188,13 @@ const AdminDashboard = ({
                   {sortColumn === "price" && sortOrder === "asc" ? "↓" : "↑"}
                 </button>
               </div>
+              <input
+                type="text"
+                placeholder="Search by Price"
+                value={searchPrice}
+                onChange={(e) => setSearchPrice(e.target.value)}
+                className="p-2 border rounded w-full"
+              />
             </th>
             <th className="border border-gray-300 px-4 py-2 text-left">
               <div className="flex justify-between items-center">
@@ -195,28 +209,6 @@ const AdminDashboard = ({
                   {sortColumn === "quantity" && sortOrder === "asc" ? "↓" : "↑"}
                 </button>
               </div>
-            </th>
-          </tr>
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">
-              <input
-                type="text"
-                placeholder="Search by Name"
-                value={searchName}
-                onChange={(e) => setSearchName(e.target.value)}
-                className="p-2 border rounded w-full"
-              />
-            </th>
-            <th className="border border-gray-300 px-4 py-2">
-              <input
-                type="text"
-                placeholder="Search by Price"
-                value={searchPrice}
-                onChange={(e) => setSearchPrice(e.target.value)}
-                className="p-2 border rounded w-full"
-              />
-            </th>
-            <th className="border border-gray-300 px-4 py-2">
               <input
                 type="text"
                 placeholder="Search by Quantity"
@@ -226,6 +218,7 @@ const AdminDashboard = ({
               />
             </th>
           </tr>
+          
         </thead>
         <tbody>
           {filteredItems.map((item) => (
