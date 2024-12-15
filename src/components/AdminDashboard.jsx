@@ -218,7 +218,6 @@ const AdminDashboard = ({
               />
             </th>
           </tr>
-          
         </thead>
         <tbody>
           {filteredItems.map((item) => (
